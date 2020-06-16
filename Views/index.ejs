@@ -43,7 +43,7 @@
 			const getMessage = msgDetail => {
 				let {msg , name , sid} = msgDetail;
 				let msgParentElement = document.createElement("div");
-				msgParentElement.className = id == msgDetail.id ? "my-message" : "message";
+				msgParentElement.className = socket.id == msgDetail.id ? "my-message" : "message";
 
 				let senderElement = document.createElement("div");
 				let msgElement = document.createElement("div")

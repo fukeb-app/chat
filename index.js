@@ -39,7 +39,7 @@ io.on('connection' , socket => {
 		io.emit('msg' , {
 			name : users.find(user => user.id == data.id).name,
 			msg : data.msg,
-			id : data.id 
+			id : socket.id 
 		});
 		}
 	})
@@ -60,6 +60,7 @@ app.get('/' , (req , res) => {
 
 app.get('/del' , () => messages = []);
 
+app.get('/msgs' , (req , res) => res.json(messages));
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT);
