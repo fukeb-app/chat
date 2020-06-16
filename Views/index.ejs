@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CHAT</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/style.css">
+	</head>
+	<body>
+
+		<div class="container">
+			<div class="root">
+				<div class="users-bar-parent">
+					<div class="title"><%= name %></div>
+					<div class="user-bar"></div>
+				</div>
+
+				<div class="message-area-parent">
+
+					<div class="message-area">
+						<% initialMessages.forEach(msg => { %>
+						<div class="<%= msg.id == id ? 'my-message' : 'message' %>">
+							<div class="sender"><%= msg.name %></div>
+							<div class="msg"><%= msg.msg %></div>
+						</div>
+						<% }) %>
+					</div>
+
+					<div class="message-send">
+						<input  type="" name="" placeholder="Mesaj Gönder" id="user-input" spellcheck>
+						<button><i class="fa fa-paper-plane"></i></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+		<script type="text/javascript">
+			const socket = io(); 
+
+			let id = "<%= id %>"
+                   
+			const sendMessage = (id , msg) => socket.emit('msg' , {id , msg})
+			const getMessage = msgDetail => {
+				let {msg , name , sid} = msgDetail;
+				let msgParentElement = document.createElement("div");
+				msgParentElement.className = id == msgDetail.id ? "my-message" : "message";
+
+				let senderElement = document.createElement("div");
+				let msgElement = document.createElement("div")
+
+				senderElement.innerText = name;
+				msgElement.innerText = msg;
+
+				msgElement.className = "msg";
+				senderElement.className = "sender";
+				msgParentElement.appendChild(senderElement);
+				msgParentElement.appendChild(msgElement);
+
+				// console.log(msgParentElement);
+				document.querySelector('.message-area').appendChild(msgParentElement);
+			}
+
+			const input = document.getElementById('user-input');
+			const submitButton = document.querySelector("button");
+
+			submitButton.addEventListener('click', () => sendMessage(id , input.value))
+
+			socket.on('msg' , data => {
+				getMessage(data);
+			})
+
+		</script>
+	</body>
+</html>
