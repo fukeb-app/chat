@@ -20,15 +20,21 @@ const users = [
 ] 
 
 
+let online = []; 
+
 const getNameById = id => users.find(user => user.id == id).name;
 let messages = [];
 
 setInterval(() => {
 	messages = [];
-} , 1000*60*60)
+} , 1000*60*60 * 6)
+
+const updateOnline = on => io.emit('online' , online.length)
 
 io.on('connection' , socket => {
 
+	online.push(socket);
+	updateOnline();
 	socket.on('msg' , data => {
 		if (isNaN(data.msg)) {
 			messages.push({
@@ -43,11 +49,18 @@ io.on('connection' , socket => {
 		});
 		}
 	})
-	
-	socket.on('disconnect' , () => console.log(socket.id))
+
+
+	socket.on('disconnect' , () => {
+		online = online.filter(user => user.id !== socket.id)
+		updateOnline();
+	})
 })
 
+// setInterval(() => {console.log(online.length)} , 1000)
 
+var clients = io.sockets.clients();
+console.log(clients.length)
 
 
 
@@ -55,10 +68,13 @@ app.get('/' , (req , res) => {
 	let id = req.query.id;
 	let name = getNameById(id);
 	let initialMessages = messages;
-	render(res , "index.ejs" , {name , id , initialMessages})
+	render(res , "index.ejs" , {name , id , initialMessages , users , online : online.length})
 })
 
-app.get('/del' , () => messages = []);
+app.get('/del' , (req , res) => {
+	messages = []
+	res.end();
+});
 
 app.get('/msgs' , (req , res) => res.json(messages));
 
