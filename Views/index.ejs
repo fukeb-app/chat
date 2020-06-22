@@ -119,7 +119,10 @@
 			
 			socket.on('msg' , data => {
 				getMessage(data);
-				input.value = "";
+				console.log(data , socket.id)
+				if (data.id == socket.id) {
+					input.value = "";
+				}
 			})
 		})
 		</script>
