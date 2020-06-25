@@ -18,10 +18,6 @@ const users = [{
 	id: "denemeid",
 	name: "test"
 },
-	{
-		name : "Onur",
-		id : "hwS4mcgJodH96OknYuN7"
-	}
 ]
 
 
