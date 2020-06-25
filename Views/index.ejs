@@ -145,6 +145,7 @@
 			
 			const a = new Audio("http://prrivchet.herokuapp.com/static/hit.mp3")
 
+
 			socket.on('msg' , data => {
 				getMessage(data);
 				if (data.id == socket.id) {
@@ -156,6 +157,7 @@
 			})
 		
 		})
+			const cal = () => a.play();
 		</script>
 	</body>
 </html>
