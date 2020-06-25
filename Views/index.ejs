@@ -1,3 +1,4 @@
+<!--  -->
 <!DOCTYPE html>
 <html>
 	<head>
@@ -9,11 +10,12 @@
 
 		<div class="container">
 			<div class="root">
+
 				<div class="users-bar-parent">
 					<div class="title"><%= name %></div>
 					<div class="user-bar">
 						<% users.forEach(user => { %>
-							<div class="user">
+							<div class="user <%= user.online %><% user.online ? 'online' : '' %>">
 								<div class="name"><%= user.name %></div>									
 							</div>
 						<% }) %>
@@ -25,14 +27,13 @@
 
 				<div class="message-area-parent">
 					<div class="message-area">
-						<div class="case" style="margin-bottom: 20px;"></div>
+
 						<% initialMessages.forEach(msg => { %>
 						<div class="<%= msg.id == id ? 'my-message' : 'message' %>">
 							<div class="sender"><%= msg.name %></div>
 							<div class="msg"><%= msg.msg %></div>
 						</div>
 						<% }) %>
-						<div class="top">  </div>
 					</div>
 
 					<div class="message-send">
@@ -40,17 +41,27 @@
 						<button><i class="fa fa-paper-plane"></i></button>
 					</div>
 				</div>
+
 			</div>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 		<script type="text/javascript">
-			$(document).ready(function(){
-			const socket = io(); 
+		
+		$(document).ready(() => {
+
+                   
+			const input = document.getElementById('user-input');
+			const submitButton = document.querySelector("button");
+			const caseEelement = document.getElementsByClassName("case");
+			const onLineUsersElement = document.querySelector('.user-bar');
 
 			let id = "<%= id %>"
-                   
+			var socket = io.connect({query : `id=${id}`}); 
+
+			document.querySelector(".message-area-parent").scrollTop = document.querySelector(".message-area-parent").scrollHeight 
+
 			const sendMessage = (id , msg) => socket.emit('msg' , {id , msg})
 
 			const getMessage = msgDetail => {
@@ -74,30 +85,40 @@
 
 			}
 
-			const input = document.getElementById('user-input');
-			const submitButton = document.querySelector("button");
-			const caseEelement = document.getElementsByClassName("case")
+			const updateOnlineUsers = users => {
+				onLineUsersElement.innerText = "";
+				users.forEach(user => {
+					let parentUserElement = document.createElement("div");
+					parentUserElement.className = `user ${user.online}`;
+					let childEl = document.createElement("div");
+					childEl.className = "name";
+					childEl.innerText = user.name;
+					parentUserElement.appendChild(childEl);
+					onLineUsersElement.appendChild(parentUserElement);
+				})
+			}
+
+
+			// socket.emit('on' , {sid : socket.id , id : "<%= id %>"})
+			let nAllow = false;
 
 			submitButton.addEventListener('click', () => sendMessage(id , input.value))
 			addEventListener('keydown' , key => {
 				if (key.code == "Enter" && document.activeElement.id == "user-input"){
 					sendMessage(id , input.value);
 				}
+
+				if(key.code == "KeyV") nAllow = !nAllow;
 			})
 
-			// input.addEventListener('input' , () => socket.emit('typing' , id));
 
-
-			// setInterval(() => {
-			// 	console.log(document.activeElement);
-			// },1000)
-
+			
 			var typing = false;
 			var timeout = undefined;
 
 			function timeoutFunction(){
 			  typing = false;
-			  socket.emit("not");
+			  
 			}
 
 			function onKeyDownNotEnter(){
@@ -111,19 +132,29 @@
 			  }
 
 			}
+			
+
 			 			
 			socket.on('online' , count => {
 				document.querySelector('.users-bar-parent .online-users .text')
-					.innerText = `${count} çevrimiçi`
+					.innerText = `${count.online} çevrimiçi`;
+
+				updateOnlineUsers(count.onlineUsers)
+
 			})
 			
+			const a = new Audio("http://localhost:3000/static/hit.mp3")
+
 			socket.on('msg' , data => {
 				getMessage(data);
-				console.log(data , socket.id)
 				if (data.id == socket.id) {
 					input.value = "";
 				}
+				if (data.id !== socket.id && nAllow) {
+					a.play();
+				}
 			})
+		
 		})
 		</script>
 	</body>

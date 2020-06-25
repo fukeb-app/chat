@@ -43,6 +43,10 @@ body{
 	border-radius: 20px;
 }
 
+.true{
+	box-shadow: 0px 0px 10px #0f0 , 0px 0px 10px #0f0;	
+}
+
 .user .name{
 	background-color: #474c50;
 	text-align: center;
@@ -88,6 +92,10 @@ body{
 	padding: var(--parent-padding);
 	background-color: #272b2e;
 	border-radius: 20px;
+}
+
+.message-area{
+	padding-top: 20px;
 }
 
 .users-bar-parent .title{
@@ -145,10 +153,11 @@ body{
 
 .message-area-parent::-webkit-scrollbar-thumb{
 	background-color:#1d2124;
+	border-radius: 20px;
 }
 
 .my-message{
-	margin-left:auto; margin-right:0;
+	margin-left:auto; margin-right:10px;
 }
 
 .my-message .sender{
@@ -169,9 +178,8 @@ body{
 	font-size: 17px;
 	border-radius: 20px;
 	margin-bottom:20px;
-	width:200px;
+	width:250px;
 }
-
 
 
 *{
