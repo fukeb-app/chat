@@ -32,7 +32,7 @@ setInterval(() => {
 const updateOnline = on => {
 	let onlineUsers = [];
 	for (let i = 0; i < users.length; i++) {
-		onlineUsers.push(items...: any)({
+		onlineUsers.push({
 			name: users[i].name,
 			online: users[i].online ? true : false
 		})
