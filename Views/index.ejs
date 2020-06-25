@@ -151,9 +151,9 @@
 				if (data.id == socket.id) {
 					input.value = "";
 				}
-				
-				a.play();
-				
+				if (data.id !== socket.id) {
+					a.play();
+				}
 			})
 		
 		})
