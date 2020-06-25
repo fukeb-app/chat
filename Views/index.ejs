@@ -108,7 +108,7 @@
 					sendMessage(id , input.value);
 				}
 
-				if(key.code == "KeyV") nAllow = !nAllow;
+				if(key.code == "KeyV" && document.activeElement !== input) nAllow = !nAllow;
 			})
 
 
