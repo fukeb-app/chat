@@ -59,7 +59,7 @@ io.on('connection', socket => {
 
 
 	socket.on('msg', data => {
-		if (isNaN(data.msg)) {
+		if ((data.msg).trim() !== "") {
 			messages.push({
 				name: users.find(user => user.id == data.id).name,
 				msg: data.msg,
