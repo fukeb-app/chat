@@ -150,8 +150,13 @@
 				if (data.id == socket.id) {
 					input.value = "";
 				}
-				if (data.id !== socket.id && nAllow) {
-					a.play();
+				if (data.id !== socket.id) {
+					if(Notification.permission !== "granted"){
+						Notification.requestPermission()
+					}
+					else {
+						new Notification("CHAT" , {body : `${data.name} : ${data.msg}`})
+					}
 				}
 			})
 		
