@@ -2,25 +2,26 @@ const render = (response, path, data = {}) => require('ejs').renderFile(`./Views
 	.then(html => response.send(html))
 const markdown = require('markdown').markdown;
 const express = require('express');
-const path = require('path');
 let app = express();
 let http = require('http').createServer(app);
-let io = require('socket.io')(http);
 
 
 app.use('/static', express.static("static"))
 
-const users = [{
-	id: "hX9hgfvZS9JHGutER785gCF57",
-	name: "Yasin"
-}, {
-	id: "JKvffgyDFgFXSYRKbH6s5rUfga",
-	name: "Furkan"
-}, {
-	id: "denemeid",
-	name: "test"
-},
-]
+const users = [
+	{
+		id : "hX9hgfvZS9JHGutER785gCF57",
+		name : "Ebubekir"
+	},
+	{
+		id : "JKvffgyDFgFXSYRKbH6s5rUfga", 
+		name : "Furkan"
+	},
+	{
+		id : "b689t5g4t4wyhg45ey54yey894",
+		name : "Enver"
+	}
+] 
 
 
 let online = 0;
