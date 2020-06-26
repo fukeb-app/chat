@@ -1,13 +1,12 @@
-<!--  -->
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>CHAT</title>
+		<title>Prriv Chet</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/static/style.css">
 	</head>
 	<body>
-
+		<button class="html"></button>
 		<div class="container">
 			<div class="root">
 
@@ -29,15 +28,15 @@
 					<div class="message-area">
 
 						<% initialMessages.forEach(msg => { %>
-						<div class="<%= msg.id == id ? 'my-message' : 'message' %>">
+						<div class="<%= msg.id == id ? 'my-message' : 'message' %> mesaj">
 							<div class="sender"><%= msg.name %></div>
-							<div class="msg"><%= msg.msg %></div>
+							<div class="msg"><%- msg.msg %></div>
 						</div>
 						<% }) %>
 					</div>
 
 					<div class="message-send">
-						<input type="" placeholder="Mesaj Gönder" id="user-input" spellcheck autocomplete = "false">
+						<input type="" placeholder="Mesaj Gönder" id="user-input" spellcheck = "false" autocomplete = "false">
 						<button><i class="fa fa-paper-plane"></i></button>
 					</div>
 				</div>
@@ -51,6 +50,10 @@
 		
 		$(document).ready(() => {
 
+			document.querySelectorAll("a").forEach(element => {
+				element.target = "_blank"
+			});
+
                    
 			const input = document.getElementById('user-input');
 			const submitButton = document.querySelector("button");
@@ -62,18 +65,19 @@
 
 			document.querySelector(".message-area-parent").scrollTop = document.querySelector(".message-area-parent").scrollHeight 
 
-			const sendMessage = (id , msg) => socket.emit('msg' , {id , msg})
+			const sendMessage = (id , msg) => socket.emit('msg' , {id , msg , html})
 
 			const getMessage = msgDetail => {
 				let {msg , name , sid} = msgDetail;
 				let msgParentElement = document.createElement("div");
-				msgParentElement.className = socket.id == msgDetail.id ? "my-message" : "message";
+				msgParentElement.className = `mesaj ${socket.id == msgDetail.id ? "my-message" : "message"}`;
 
 				let senderElement = document.createElement("div");
 				let msgElement = document.createElement("div")
 
 				senderElement.innerText = name;
-				msgElement.innerText = msg;
+				msgElement.innerHTML = msg;
+
 
 				msgElement.className = "msg";
 				senderElement.className = "sender";
@@ -82,6 +86,10 @@
 				// console.log(msgParentElement);
 				document.querySelector('.message-area').appendChild(msgParentElement);
 				document.querySelector(".message-area-parent").scrollTop = document.querySelector(".message-area-parent").scrollHeight 
+
+				document.querySelectorAll("a").forEach(element => {
+					element.target = "_blank"
+				});
 
 			}
 
@@ -100,17 +108,17 @@
 
 
 			// socket.emit('on' , {sid : socket.id , id : "<%= id %>"})
-			let nAllow = false;
+			let html = true;
 
 			submitButton.addEventListener('click', () => sendMessage(id , input.value))
 			addEventListener('keydown' , key => {
 				if (key.code == "Enter" && document.activeElement.id == "user-input"){
-					sendMessage(id , input.value);
+					sendMessage(id , input.value , html);
 				}
 
 				if(key.code == "KeyV" && document.activeElement !== input) nAllow = !nAllow;
 			})
-
+			document.querySelector("button.html").addEventListener('click' , () => html = !html);
 
 			
 			var typing = false;
@@ -143,7 +151,7 @@
 
 			})
 			
-			const a = new Audio("http://prrivchet.herokuapp.com/static/hit.mp3")
+			const a = new Audio("/static/sounds/score.mp3")
 
 
 			socket.on('msg' , data => {
@@ -152,12 +160,18 @@
 					input.value = "";
 				}
 				if (data.id !== socket.id) {
+					console.log(data.id)
 					a.play();
+					// Notification.requestPermission()
+					// 	.then(per => {
+					// 		if (per == "granted") {
+					// 			new Notification(`${data.name} | PRRIV` , {body : data.msg})
+					// 		}
+					// 	}) 
 				}
 			})
 		
 		})
-			const cal = () => a.play();
 		</script>
 	</body>
 </html>

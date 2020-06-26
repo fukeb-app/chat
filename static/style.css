@@ -143,6 +143,7 @@ body{
 
 .message-area-parent{
 	overflow-y: scroll;
+	overflow-x:hidden;
 }
 
 .message-area-parent::-webkit-scrollbar{
@@ -170,7 +171,19 @@ body{
 	margin-bottom: 20px;
 }
 
-.my-message , .message{
+.mesaj::-webkit-scrollbar{
+	background: transparent;
+	/*display: none;*/
+	height: 12px;
+}
+
+.mesaj::-webkit-scrollbar-thumb{
+	background-color:#1d2124;
+	border-radius: 20px;
+}
+
+.mesaj{
+	overflow-x: auto;
 	position: sticky;
 	background-color: #474d53;
 	padding: 10px;
@@ -181,6 +194,24 @@ body{
 	width:250px;
 }
 
+.msg a{
+	color:#78a6ff;
+}
+
+.msg p , .msg h1 , .msg h2 , .msg h3 , .msg h4 , .msg h5 , .msg h6{
+	  margin: 0;
+    padding: 0;
+}
+
+button.html{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 20px;
+	height: 20px;
+	border:none;
+	background:transparent;
+}
 
 *{
 	/*border:.1px solid red;*/
