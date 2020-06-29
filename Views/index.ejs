@@ -15,7 +15,7 @@
 					<div class="user-bar">
 						<% users.forEach(user => { %>
 							<div class="user <%= user.online %><% user.online ? 'online' : '' %>">
-								<div class="FUKEB></div>									
+								<div class="name"><%= user.name %></div>									
 							</div>
 						<% }) %>
 					</div>
