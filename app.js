@@ -4,7 +4,7 @@ const markdown = require('markdown').markdown;
 const express = require('express');
 let app = express();
 let http = require('http').createServer(app);
-const io = require('socket.io')(https)
+const io = require('socket.io')(http)
 
 app.use('/static', express.static("static"))
 
