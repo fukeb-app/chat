@@ -110,7 +110,7 @@
 			// socket.emit('on' , {sid : socket.id , id : "<%= id %>"})
 			let html = true;
 
-			submitButton.addEventListener('click', () => sendMessage(id , input.value))
+			submitButton.addEventListener('click', () => sendMessage(id , input.value , html))
 			addEventListener('keydown' , key => {
 				if (key.code == "Enter" && document.activeElement.id == "user-input"){
 					sendMessage(id , input.value , html);
